@@ -16,7 +16,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="62dp"
         android:layout_marginRight="62dp"
-        android:layout_marginBottom="382dp"
+        android:layout_marginBottom="538dp"
         android:background="@drawable/round_button"
         android:text="url_button1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,13 +97,27 @@
         android:layout_marginLeft="46dp"
         android:layout_marginEnd="46dp"
         android:layout_marginRight="46dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/bordered_textview"
-        android:text="TextView"
+        android:text="Type URL..."
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="135dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginLeft="136dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#c2f2bb"
+        android:text="CONNECT"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
