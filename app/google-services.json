@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "625273146906",
+    "firebase_url": "https://flightmobileapp.firebaseio.com",
+    "project_id": "flightmobileapp",
+    "storage_bucket": "flightmobileapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625273146906:android:a61bb7b61cab3a0024cba3",
+        "android_client_info": {
+          "package_name": "com.example.flightmobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625273146906-eei55baslns40su5dq4apid6ggiiqle8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flightmobileapp",
+            "certificate_hash": "2b32786eef9346dec72b94f1b7dfd69c57cd4277"
+          }
+        },
+        {
+          "client_id": "625273146906-p2g82etcqrrm760i08qbdulf0brvjfmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoYrKl2Kn1ZPf60ABF7p6E76knB8oQEIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625273146906-p2g82etcqrrm760i08qbdulf0brvjfmj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
