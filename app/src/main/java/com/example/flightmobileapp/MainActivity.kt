@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,14 +53,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveURL(url: String) {
         cache.insert(url)
-//        val ref = FirebaseDatabase.getInstance().getReference("URLs")
-//        val id = ref.push().key
-//        val obj = id?.let { UserURL(it, url) }
-//        if (id != null) {
-//            ref.child(id).setValue(obj).addOnCompleteListener {
-//                Toast.makeText(applicationContext, "Saved!", Toast.LENGTH_LONG).show()
-//            }
-//        }
     }
 
     private fun initView() {

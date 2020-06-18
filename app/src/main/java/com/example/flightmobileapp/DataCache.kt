@@ -17,6 +17,11 @@ class DataCache(cap: Int, context: Context) {
 
     public fun insert(url: String) {
         if (url.isNullOrEmpty()) {
+            Toast.makeText(
+                applicationContext,
+                "Please insert URL to connect",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
         if (exists(url)) {
@@ -34,8 +39,9 @@ class DataCache(cap: Int, context: Context) {
         var i = 0
         while (i < physize) {
             var current = data[i]
-            if (current == null)
+            if (current == null) {
                 break
+            }
             val obj = UserURL(i.toString(), current)
             ref.child(i.toString()).setValue(obj).addOnCompleteListener {
                 Toast.makeText(applicationContext, "Saved!", Toast.LENGTH_LONG).show()
