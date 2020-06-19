@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Control">
+
+    <Button
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginTop="297dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/circle_button"
+        android:backgroundTint="#4f5250"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/rudder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/elevator_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/knob_limits"
+        android:layout_width="165dp"
+        android:layout_height="160dp"
+        android:background="@drawable/circle_button"
+        android:backgroundTint="#2e2d2d"
+        android:text=""
+        app:layout_constraintBaseline_toBaselineOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/knob"
+        android:layout_width="88dp"
+        android:layout_height="85dp"
+        android:background="@drawable/circle_button"
+        android:backgroundTint="#7d7a7a"
+        android:text=""
+        app:layout_constraintBaseline_toBaselineOf="@+id/knob_limits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <SeekBar
+        android:id="@+id/rudder_seekbar"
+        android:layout_width="287dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        android:layout_marginBottom="35dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/elevator_label" />
+
+    <TextView
+        android:id="@+id/aileron_label"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="173dp"
+        android:layout_marginLeft="173dp"
+        android:layout_marginTop="273dp"
+        android:layout_marginBottom="260dp"
+        android:text="Aileron: "
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/aileron"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/elevator_label"
+        android:layout_width="74dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="354dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="167dp"
+        android:orientation="horizontal"
+        android:text="Elevator: "
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/background"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rudder_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginLeft="155dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="17dp"
+        android:text="Rudder: "
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rudder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rudder_seekbar"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <EditText
+        android:id="@+id/rudder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginRight="135dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rudder_label"
+        app:layout_constraintTop_toBottomOf="@+id/aileron" />
+
+    <EditText
+        android:id="@+id/elevator"
+        android:layout_width="46dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.766" />
+
+    <EditText
+        android:id="@+id/aileron"
+        android:layout_width="43dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="257dp"
+        android:layout_marginEnd="123dp"
+        android:layout_marginRight="123dp"
+        android:layout_marginBottom="270dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/rudder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aileron_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

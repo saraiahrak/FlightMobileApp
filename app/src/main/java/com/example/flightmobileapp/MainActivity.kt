@@ -1,5 +1,6 @@
 package com.example.flightmobileapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -23,7 +24,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initView();
         cache = DataCache(5, applicationContext)
+        if (!cache.isEmpty()) {
+            showOnButtons()
+        }
         setButtonsListeners()
+
     }
 
     private fun setButtonsListeners() {
@@ -38,6 +43,8 @@ class MainActivity : AppCompatActivity() {
             user_url.text = ""
             saveURL(url)
             showOnButtons()
+            val intent = Intent(this, Control::class.java)
+            startActivity(intent)
         }
     }
 
@@ -46,6 +53,8 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener {
                 if (button.text.isNotEmpty()) {
                     user_url.text = button.text
+                    cache.insert(button.text.toString())
+                    showOnButtons()
                 }
             }
         }
