@@ -8,31 +8,38 @@
 
     <Button
         android:id="@+id/background"
-        android:layout_width="249dp"
+        android:layout_width="0dp"
         android:layout_height="252dp"
         android:layout_marginStart="79dp"
         android:layout_marginLeft="79dp"
         android:layout_marginTop="297dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginRight="82dp"
         android:layout_marginBottom="17dp"
         android:background="@drawable/circle_button"
         android:backgroundTint="#4f5250"
         android:text=""
         app:layout_constraintBottom_toTopOf="@+id/rudder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/elevator_label"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.012" />
 
     <Button
         android:id="@+id/knob_limits"
-        android:layout_width="165dp"
+        android:layout_width="0dp"
         android:layout_height="160dp"
+        android:layout_marginStart="123dp"
+        android:layout_marginLeft="123dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
         android:background="@drawable/circle_button"
         android:backgroundTint="#2e2d2d"
         android:text=""
         app:layout_constraintBaseline_toBaselineOf="@+id/background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/throttle_label"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -54,12 +61,12 @@
         android:layout_marginLeft="68dp"
         android:layout_marginEnd="68dp"
         android:layout_marginRight="68dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="37dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/elevator_label" />
+        app:layout_constraintTop_toBottomOf="@+id/throttle_label" />
 
     <TextView
         android:id="@+id/aileron_label"
@@ -79,22 +86,6 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/elevator_label"
-        android:layout_width="0dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="354dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="167dp"
-        android:orientation="horizontal"
-        android:text="Elevator: "
-        android:textSize="7.5pt"
-        android:rotation="90"
-        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/rudder_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,35 +100,26 @@
         app:layout_constraintEnd_toStartOf="@+id/rudder"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/rudder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginRight="135dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="46dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="222dp"
+        android:layout_marginLeft="222dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="9dp"
         android:ems="10"
         android:inputType="numberDecimal"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/throttle"
         app:layout_constraintStart_toEndOf="@+id/rudder_label"
-        app:layout_constraintTop_toBottomOf="@+id/aileron" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/throttle_seekbar" />
 
-    <EditText
-        android:id="@+id/elevator"
-        android:layout_width="59dp"
-        android:layout_height="43dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:ems="10"
-        android:rotation="90"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.814" />
-
-    <EditText
+    <TextView
         android:id="@+id/aileron"
         android:layout_width="43dp"
         android:layout_height="44dp"
@@ -146,11 +128,93 @@
         android:layout_marginRight="123dp"
         android:layout_marginBottom="270dp"
         android:ems="10"
+        android:text=""
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toTopOf="@+id/rudder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/aileron_label"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <SeekBar
+        android:id="@+id/throttle_seekbar"
+        android:layout_width="259dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginLeft="216dp"
+        android:layout_marginTop="382dp"
+        android:rotation="270"
+        app:layout_constraintBottom_toTopOf="@+id/rudder"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/elevator_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="70dp"
+        android:rotation="270"
+        android:text="Elevator: "
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
+        app:layout_constraintEnd_toStartOf="@+id/background"
+        app:layout_constraintHorizontal_bias="0.307"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833" />
+
+    <TextView
+        android:id="@+id/elevator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="84dp"
+        android:rotation="270"
+        android:text=""
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toBottomOf="@+id/throttle_seekbar"
+        app:layout_constraintEnd_toStartOf="@+id/background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aileron" />
+
+    <TextView
+        android:id="@+id/throttle_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="409dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="115dp"
+        android:rotation="90"
+        android:text="Throttle: "
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/knob_limits"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/throttle"
+        android:layout_width="47dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="56dp"
+        android:rotation="90"
+        android:text=""
+        android:textSize="7.5pt"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rudder" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
