@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import kotlin.math.round
+import kotlinx.android.synthetic.main.activity_control.*
 
 class Control : AppCompatActivity() {
 
@@ -46,15 +48,75 @@ class Control : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initSeekBars() {
+
         initRudderBar()
+        initThrottleBar()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initRudderBar() {
-        var min = -1
-        var max = 1
-        var step = 50
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return round(this * multiplier) / multiplier
+        }
+
+        var min = -10
+        var max = 10
         rudderSeekbar.max = max
         rudderSeekbar.min = min
+
+        rudderSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                var progress = Utils.normalize(
+                    p1.toDouble(),
+                    (-1).toDouble(),
+                    1.toDouble(),
+                    (-10).toDouble(),
+                    10.toDouble()
+                )
+                rudder.text = progress.round(2).toString()
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initThrottleBar() {
+        var min = 0
+        var max = 10
+        throttleSeekbar.max = max
+        throttleSeekbar.min = min
+
+        throttleSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                var progress = Utils.normalize(
+                    p1.toDouble(),
+                    (0).toDouble(),
+                    1.toDouble(),
+                    (0).toDouble(),
+                    10.toDouble()
+                )
+                throttle.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+        })
     }
 }

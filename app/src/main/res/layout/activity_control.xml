@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/background"
-        android:layout_width="0dp"
+        android:layout_width="252dp"
         android:layout_height="252dp"
         android:layout_marginStart="79dp"
         android:layout_marginLeft="79dp"
@@ -21,14 +21,14 @@
         android:text=""
         app:layout_constraintBottom_toTopOf="@+id/rudder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.012" />
 
     <Button
         android:id="@+id/knob_limits"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginStart="123dp"
         android:layout_marginLeft="123dp"
@@ -40,17 +40,19 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/throttle_label"
+        app:layout_constraintHorizontal_bias="0.023"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/knob"
         android:layout_width="88dp"
-        android:layout_height="85dp"
+        android:layout_height="88dp"
         android:background="@drawable/circle_button"
         android:backgroundTint="#7d7a7a"
         android:text=""
         app:layout_constraintBaseline_toBaselineOf="@+id/knob_limits"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
@@ -70,8 +72,8 @@
 
     <TextView
         android:id="@+id/aileron_label"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_width="69dp"
+        android:layout_height="27dp"
         android:layout_marginStart="173dp"
         android:layout_marginLeft="173dp"
         android:layout_marginTop="273dp"
@@ -112,6 +114,8 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:text=""
+        android:textSize="7.5pt"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/throttle"
@@ -121,28 +125,32 @@
 
     <TextView
         android:id="@+id/aileron"
-        android:layout_width="43dp"
-        android:layout_height="44dp"
+        android:layout_width="32dp"
+        android:layout_height="26dp"
         android:layout_marginTop="257dp"
         android:layout_marginEnd="123dp"
         android:layout_marginRight="123dp"
         android:layout_marginBottom="270dp"
         android:ems="10"
-        android:text=""
         android:inputType="numberDecimal"
+        android:text=""
+        android:textSize="7.5pt"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rudder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/aileron_label"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.416" />
 
     <SeekBar
         android:id="@+id/throttle_seekbar"
         android:layout_width="259dp"
         android:layout_height="0dp"
-        android:layout_marginStart="216dp"
-        android:layout_marginLeft="216dp"
-        android:layout_marginTop="382dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginLeft="224dp"
+        android:layout_marginTop="280dp"
+        android:max="1"
+        android:progress="0"
         android:rotation="270"
         app:layout_constraintBottom_toTopOf="@+id/rudder"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,8 +178,8 @@
 
     <TextView
         android:id="@+id/elevator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="42dp"
+        android:layout_height="30dp"
         android:layout_marginStart="9dp"
         android:layout_marginLeft="9dp"
         android:layout_marginTop="84dp"
@@ -181,10 +189,13 @@
         android:rotation="270"
         android:text=""
         android:textSize="7.5pt"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/throttle_seekbar"
         app:layout_constraintEnd_toStartOf="@+id/background"
+        app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aileron" />
+        app:layout_constraintTop_toBottomOf="@+id/aileron"
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/throttle_label"
@@ -199,7 +210,7 @@
         android:textSize="7.5pt"
         app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/knob_limits"
+        app:layout_constraintStart_toEndOf="@+id/rudder_seekbar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -208,10 +219,11 @@
         android:layout_height="37dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="44dp"
         android:rotation="90"
         android:text=""
         android:textSize="7.5pt"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rudder" />
