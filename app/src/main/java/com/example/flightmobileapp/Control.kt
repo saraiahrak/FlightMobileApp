@@ -5,12 +5,15 @@ import android.database.Cursor
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import io.github.controlwear.virtual.joystick.android.JoystickView
 import kotlin.math.round
 
 
@@ -22,8 +25,7 @@ class Control : AppCompatActivity() {
     private lateinit var aileron: TextView
     private lateinit var elevator: TextView
     private lateinit var throttle: TextView
-    private lateinit var knob: Button
-    private lateinit var knobLimits: Button
+    private lateinit var joystickView: JoystickView
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,27 +42,15 @@ class Control : AppCompatActivity() {
         aileron = findViewById(R.id.aileron)
         elevator = findViewById(R.id.elevator)
         throttle = findViewById(R.id.throttle)
-        knob = findViewById(R.id.knob)
-        knobLimits = findViewById(R.id.background)
+        joystickView = findViewById(R.id.joystickView)
+        joystickView.bringToFront()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initListeners() {
         initSeekBars()
-        initKnob()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun initKnob() {
-        knob.isLongClickable = true
-
-        knob.setOnLongClickListener(object : View.OnLongClickListener {
-            override fun onLongClick(p0: View?): Boolean {
-                return true
-            }
-
-        })
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initSeekBars() {
@@ -135,3 +125,4 @@ class Control : AppCompatActivity() {
         })
     }
 }
+
