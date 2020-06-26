@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Control">
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
-        android:id="@+id/joystickView"
-        android:layout_width="175dp"
-        android:layout_height="177dp"
+        android:id="@+id/joystick"
+        android:layout_width="176dp"
+        android:layout_height="176dp"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="360dp"
         app:JV_backgroundColor="#9c9998"
@@ -122,209 +123,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="310dp"
         android:background="?android:attr/listDivider" />
-
-
-    <!--    <SeekBar-->
-    <!--        android:id="@+id/rudder_seekbar"-->
-    <!--        android:layout_width="235dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="68dp"-->
-    <!--        android:layout_marginLeft="68dp"-->
-    <!--        android:layout_marginTop="545dp"-->
-    <!--        android:layout_marginEnd="68dp"-->
-    <!--        android:layout_marginRight="68dp"-->
-    <!--        android:layout_marginBottom="40dp"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rudder"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/aileron_label"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="27dp"-->
-    <!--        android:layout_marginStart="174dp"-->
-    <!--        android:layout_marginLeft="174dp"-->
-    <!--        android:layout_marginTop="290dp"-->
-    <!--        android:layout_marginEnd="2dp"-->
-    <!--        android:layout_marginRight="2dp"-->
-    <!--        android:layout_marginBottom="260dp"-->
-    <!--        android:text="Aileron:  "-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/aileron"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.0" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/rudder_label"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="155dp"-->
-    <!--        android:layout_marginLeft="155dp"-->
-    <!--        android:layout_marginEnd="3dp"-->
-    <!--        android:layout_marginRight="3dp"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        android:text="Rudder: "-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/rudder"-->
-    <!--        app:layout_constraintHorizontal_chainStyle="packed"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!--    &lt;!&ndash;    <TextView&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:id="@+id/rudder"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_width="46dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_height="0dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginStart="222dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginLeft="222dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginEnd="48dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginRight="48dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginBottom="12dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:ems="10"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:inputType="numberDecimal"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:text="0.0"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:textSize="7.5pt"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:textStyle="bold"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintEnd_toStartOf="@+id/throttle"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintStart_toEndOf="@+id/rudder_label"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintTop_toBottomOf="@+id/aileron" />&ndash;&gt;-->
-
-
-    <!--    <SeekBar-->
-    <!--        android:id="@+id/throttle_seekbar"-->
-    <!--        android:layout_width="202dp"-->
-    <!--        android:layout_height="308dp"-->
-    <!--        android:layout_marginStart="224dp"-->
-    <!--        android:layout_marginLeft="224dp"-->
-    <!--        android:layout_marginTop="280dp"-->
-    <!--        android:max="1"-->
-    <!--        android:progress="0"-->
-    <!--        android:rotation="270"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rudder"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.926"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/aileron"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.0" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/elevator_label"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="7dp"-->
-    <!--        android:layout_marginLeft="7dp"-->
-    <!--        android:layout_marginBottom="124dp"-->
-    <!--        android:rotation="270"-->
-    <!--        android:text="Elevator: "-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/elevator" />-->
-
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/throttle_label"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="409dp"-->
-    <!--        android:layout_marginEnd="4dp"-->
-    <!--        android:layout_marginRight="4dp"-->
-    <!--        android:layout_marginBottom="115dp"-->
-    <!--        android:rotation="90"-->
-    <!--        android:text="Throttle: "-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rudder_seekbar"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/joystickView"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/throttle"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="32dp"-->
-    <!--        android:layout_marginEnd="27dp"-->
-    <!--        android:layout_marginRight="27dp"-->
-    <!--        android:rotation="90"-->
-    <!--        android:text="0.0"-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/throttle_label" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/elevator"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="31dp"-->
-    <!--        android:layout_marginLeft="31dp"-->
-    <!--        android:layout_marginTop="376dp"-->
-    <!--        android:layout_marginEnd="260dp"-->
-    <!--        android:layout_marginRight="260dp"-->
-    <!--        android:layout_marginBottom="29dp"-->
-    <!--        android:rotation="270"-->
-    <!--        android:text="0.0"-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/elevator_label"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/throttle_label"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/aileron"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="293dp"-->
-    <!--        android:layout_marginEnd="140dp"-->
-    <!--        android:layout_marginRight="140dp"-->
-    <!--        android:layout_marginBottom="200dp"-->
-    <!--        android:text="0.0"-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rudder"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/aileron_label"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/rudder"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginEnd="7dp"-->
-    <!--        android:layout_marginRight="7dp"-->
-    <!--        android:layout_marginBottom="15dp"-->
-    <!--        android:text="0.0"-->
-    <!--        android:textSize="7.5pt"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/rudder_label"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/rudder_seekbar" />-->
-
-    <!--    &lt;!&ndash;    <TextView&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:id="@+id/aileron"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_width="0dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_height="0dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginTop="290dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginEnd="119dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginRight="119dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:layout_marginBottom="246dp"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:text="0.0"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:textSize="7.5pt"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        android:textStyle="bold"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintBottom_toTopOf="@+id/rudder"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintStart_toEndOf="@+id/aileron_label"&ndash;&gt;-->
-    <!--    &lt;!&ndash;        app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
 
 
 </RelativeLayout>

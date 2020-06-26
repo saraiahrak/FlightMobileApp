@@ -1,8 +1,10 @@
 package com.example.flightmobileapp
 
-import com.google.firebase.database.DataSnapshot
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class UserURL(val id: String, val url: String) {
+data class UserURL(val id: String, val url: String) {
 
     public fun isEqual(other: UserURL): Boolean {
         return this.url == other.url

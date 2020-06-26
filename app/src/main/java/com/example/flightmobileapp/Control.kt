@@ -1,20 +1,17 @@
 package com.example.flightmobileapp
 
-import android.content.ClipData
-import android.database.Cursor
+import android.content.res.Configuration
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.view.DragEvent
-import android.view.MotionEvent
-import android.view.View
-import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import io.github.controlwear.virtual.joystick.android.JoystickView
+import kotlin.math.cos
 import kotlin.math.round
+import kotlin.math.sin
 
 
 class Control : AppCompatActivity() {
@@ -25,7 +22,8 @@ class Control : AppCompatActivity() {
     private lateinit var aileron: TextView
     private lateinit var elevator: TextView
     private lateinit var throttle: TextView
-    private lateinit var joystickView: JoystickView
+    private lateinit var joystick: JoystickView
+    private lateinit var layout: RelativeLayout
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,15 +40,58 @@ class Control : AppCompatActivity() {
         aileron = findViewById(R.id.aileron)
         elevator = findViewById(R.id.elevator)
         throttle = findViewById(R.id.throttle)
-        joystickView = findViewById(R.id.joystickView)
-        joystickView.bringToFront()
+        joystick = findViewById(R.id.joystick)
+        layout = findViewById(R.id.layout)
+        joystick.bringToFront()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initListeners() {
         initSeekBars()
+        initJoystick()
     }
 
+
+    private fun toRadians(angle: Int): Double {
+        return angle.toDouble() * Math.PI / 180
+
+    }
+
+    private fun getNorm(strength: Int): Double {
+        return strength.toDouble() / 100
+    }
+
+    private fun calcX(norm: Double, angle: Int): Double {
+        val radians = toRadians(angle)
+        return norm * cos(radians)
+    }
+
+    private fun calcY(norm: Double, angle: Int): Double {
+        val radians = toRadians(angle)
+        return -norm * sin(radians)
+
+    }
+
+    private fun initJoystick() {
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return round(this * multiplier) / multiplier
+        }
+
+
+        joystick.setOnMoveListener(object : JoystickView.OnMoveListener {
+            override fun onMove(angle: Int, strength: Int) {
+                val norm = getNorm(strength)
+                val x = calcX(norm, angle)
+                val y = calcY(norm, angle)
+
+                aileron.text = x.round(3).toString()
+                elevator.text = y.round(3).toString()
+            }
+        })
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initSeekBars() {
