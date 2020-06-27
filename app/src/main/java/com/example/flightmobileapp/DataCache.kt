@@ -32,7 +32,7 @@ class DataCache(cap: Int, context: Context) {
 //        })
     }
 
-    public fun isEmpty(): Boolean {
+    fun isEmpty(): Boolean {
         return physize == 0
     }
 
@@ -72,7 +72,7 @@ class DataCache(cap: Int, context: Context) {
 //        })
 //    }
 
-    public fun insert(url: String) {
+    fun insert(url: String) {
         if (url.isNullOrEmpty()) {
             Toast.makeText(
                 applicationContext,

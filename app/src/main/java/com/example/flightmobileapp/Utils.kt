@@ -6,7 +6,7 @@ class Utils {
 
     companion object {
 
-        public fun normalize(
+        fun normalize(
             n: Double,
             a: Double,
             b: Double,
