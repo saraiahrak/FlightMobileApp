@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Control"
-    android:id="@+id/layout">
+    tools:context=".Control">
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystick"
@@ -123,6 +123,14 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="315dp"
         android:background="?android:attr/listDivider" />
+
+    <ImageView
+        android:id="@+id/screenshot"
+        android:layout_width="300dp"
+        android:layout_height="320dp"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
 </RelativeLayout>

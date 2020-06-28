@@ -48,10 +48,12 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
 
-    fun connect(u: String):Boolean {
+    fun connect(u: String): Boolean {
         val temp: URL
         try {
-            temp = URL(u)
+//            temp = URL(u)
+
+            temp = URL(u);
             connection = temp.openConnection() as HttpURLConnection
         } catch (e: Exception) {
             return false
@@ -74,13 +76,13 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
             override fun onFailure(call: Call<Command>, t: Throwable) {
                 setNotification("server isn't responding")
             }
+
             override fun onResponse(call: Call<Command>, response: Response<Command>) {
                 if (response.code() == 200) {
                     succeed = true
-                }
-                else if(response.code() == 500) {
+                } else if (response.code() == 500) {
                     setNotification("connection failed")
-                } else if(response.code() == 400){
+                } else if (response.code() == 400) {
                     setNotification("format error")
                 } else {
                     setNotification("error")
@@ -119,6 +121,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
                     setNotification("error in getting the image")
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 setNotification("timeout - server not responding")
             }

@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var connect_button: Button;
     lateinit var user_url: TextView;
     lateinit var cache: DataCache;
-    private var controlManager = ControlManager(this)
+    private var controlManager: ControlManager = ControlManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +45,12 @@ class MainActivity : AppCompatActivity() {
         connect_button.setOnClickListener {
             val url = user_url.text.toString().trim()
             user_url.hint = "Type URL..."
-            user_url.text = ""
+//            user_url.text = ""
             saveURL(url)
             showOnButtons()
-            val intent = Intent(this, Control::class.java)
-            startActivity(intent)
+            controlActivity()
+//            val intent = Intent(this, Control::class.java)
+//            startActivity(intent)
         }
     }
 
@@ -97,10 +98,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun activateControl() {
+        val intent = Intent(this, Control::class.java)
+        startActivity(intent)
+    }
 
-    fun controlActivity(view: View) {
+
+    fun controlActivity() {
         // connect to server with the given url
-        view.id
+//        view.id
         if (user_url.text.toString() == "") {
             controlManager.setNotification("insert url")
             return
@@ -113,19 +119,26 @@ class MainActivity : AppCompatActivity() {
             controlManager.setNotification("connection failed")
             user_url.setText("")
         } else {
+            RetrofitBuilder.build(url)
             val api = RetrofitBuilder.getApi()
             if (api == null) {
                 // problem with server
                 controlManager.setNotification("can't connect to server")
             }
             api?.getScreenshot()?.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response:
-                Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>, response:
+                    Response<ResponseBody>
+                ) {
                     if (response.code() == 404) {
                         controlManager.setNotification("connection failed")
                         user_url.setText("")
                         return
                     }
+
+//                    activateControl()
+//                    val intent = Intent(applicationContext, Control::class.java)
+//                    startActivity(intent)
                     val intent = Intent(this@MainActivity, Control::class.java)
                     intent.putExtra("url", url)
                     startActivity(intent)
@@ -139,7 +152,6 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
-
 
 
 }
