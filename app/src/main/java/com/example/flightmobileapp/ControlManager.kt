@@ -20,9 +20,12 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     private var elevator: Double = 0.0
     private var throttle: Double = 0.0
     private var rudder: Double = 0.0
-    private lateinit var api: Api
+    private var api: Api = RetrofitBuilder.getApi()
 
-
+    private var lastAileronVal = 0.0
+    private var lastElevatorVal = 0.0
+    private var lastThrottleVal = 0.0
+    private var lastRudderVal = 0.0
     fun setAileron(value: Double) {
         aileron = value
     }
@@ -48,6 +51,31 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
 
+    fun shouldSendCommand(
+        rudderVal: Double,
+        elevatorVal: Double,
+        aileronVal: Double,
+        throttleVal: Double
+    ): Boolean {
+        if (shouldSend(rudderVal, lastRudderVal)) {
+            lastRudderVal = rudderVal
+            return true
+        }
+        if (shouldSend(elevatorVal, lastElevatorVal)) {
+            lastElevatorVal = elevatorVal
+            return true
+        }
+        if (shouldSend(aileronVal, lastAileronVal)) {
+            lastAileronVal = aileronVal
+            return true
+        }
+        if (shouldSend(throttleVal, lastThrottleVal)) {
+            lastThrottleVal = throttleVal
+            return true
+        }
+        return false
+    }
+
     fun connect(u: String): Boolean {
         val temp: URL
         try {
@@ -71,7 +99,12 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
         connection.doOutput = true
         // create json command
         val newCommand =
-            Command(rudder.toFloat(), elevator.toFloat(), aileron.toFloat(), throttle.toFloat())
+            Command(
+                lastRudderVal.toFloat(),
+                lastElevatorVal.toFloat(),
+                lastAileronVal.toFloat(),
+                lastThrottleVal.toFloat()
+            )
         api.post(newCommand).enqueue(object : Callback<Command> {
             override fun onFailure(call: Call<Command>, t: Throwable) {
                 setNotification("server isn't responding")
@@ -98,7 +131,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
 
-    fun shouldSend(newVal: Double, lastVal: Double): Boolean {
+    private fun shouldSend(newVal: Double, lastVal: Double): Boolean {
         // checks if values changed in more than 1%
         if ((newVal > 1.01 * lastVal) || (newVal < 0.99 * lastVal)) {
             return true

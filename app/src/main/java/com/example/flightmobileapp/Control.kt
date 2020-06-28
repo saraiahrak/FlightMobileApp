@@ -18,7 +18,7 @@ class Control : AppCompatActivity() {
     private var controlManager = ControlManager(this)
     private var showImage: Boolean = true
 
-    private lateinit  var image: ImageView
+    private lateinit var image: ImageView
     private lateinit var rudderSeekbar: SeekBar
     private lateinit var throttleSeekbar: SeekBar
     private lateinit var rudder: TextView
@@ -27,11 +27,11 @@ class Control : AppCompatActivity() {
     private lateinit var throttle: TextView
     private lateinit var joystick: JoystickView
     private lateinit var layout: RelativeLayout
-
-    private var lastAileronVal = 0.0
-    private var lastElevatorVal = 0.0
-    private var lastThrottleVal = 0.0
-    private var lastRudderVal = 0.0
+//
+//    private var lastAileronVal = 0.0
+//    private var lastElevatorVal = 0.0
+//    private var lastThrottleVal = 0.0
+//    private var lastRudderVal = 0.0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -104,44 +104,30 @@ class Control : AppCompatActivity() {
         joystick.setOnMoveListener(object : JoystickView.OnMoveListener {
             override fun onMove(angle: Int, strength: Int) {
                 val norm = getNorm(strength)
-                val x = calcX(norm, angle)
-                val y = calcY(norm, angle)
+                val x = calcX(norm, angle).round(3)
+                val y = calcY(norm, angle).round(3)
 
-                aileron.text = x.round(3).toString()
-                elevator.text = y.round(3).toString()
+                val rudderVal = rudder.text.toString().toDouble()
+                val throttleVal = rudder.text.toString().toDouble()
+
+                sendToSim(rudderVal, y, x, throttleVal)
+
+                aileron.text = x.toString()
+                elevator.text = y.toString()
             }
         })
     }
 
+    private fun sendToSim(rudder: Double, elevator: Double, aileron: Double, throttle: Double) {
+        val shouldSend = controlManager.shouldSendCommand(rudder, elevator, aileron, throttle)
 
-    private fun setJoystick() {
-        var sendToSimulator = false
-
-        joystick.setOnMoveListener {
-                angle, strength ->
-            val aileron = cos(Math.toRadians(angle.toDouble())) * strength / 100
-            val elevator = sin(Math.toRadians(angle.toDouble())) * strength / 100
-            // the change is measured from the last value that sent to the server, therefore
-            if (controlManager.shouldSend(aileron, lastAileronVal)) {
-                controlManager.setAileron(aileron)
-                sendToSimulator = true
-            }
-            if (controlManager.shouldSend(elevator, lastElevatorVal)) {
-                controlManager.setElevator(elevator)
-                sendToSimulator = true
-            }
-            // if the change is more than 1% we need to send the new values to the simulator
-            if (sendToSimulator) {
-                if (controlManager.sendCommand()) {
-                    lastAileronVal = aileron
-                    lastElevatorVal = elevator
-                } else {
-                    controlManager.setNotification("error in sending to server")
-                }
+        if (shouldSend) {
+            val sent = controlManager.sendCommand()
+            if (!sent) {
+                controlManager.setNotification("failed to send values")
             }
         }
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -173,7 +159,15 @@ class Control : AppCompatActivity() {
                     min.toDouble(),
                     max.toDouble()
                 )
-                rudder.text = progress.round(2).toString()
+
+                val current = progress.round(2)
+
+                val elevatorVal = elevator.text.toString().toDouble()
+                val throttleVal = throttle.text.toString().toDouble()
+                val aileronVal = aileron.text.toString().toDouble()
+
+                sendToSim(current, elevatorVal, aileronVal, throttleVal)
+                rudder.text = current.toString()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -187,6 +181,14 @@ class Control : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initThrottleBar() {
+
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return round(this * multiplier) / multiplier
+        }
+
         val min = 0
         val max = 10
         throttleSeekbar.max = max
@@ -201,7 +203,15 @@ class Control : AppCompatActivity() {
                     min.toDouble(),
                     max.toDouble()
                 )
-                throttle.text = progress.toString()
+
+                val current = progress.round(2)
+
+                val rudderVal = rudder.text.toString().toDouble()
+                val elevatorVal = elevator.text.toString().toDouble()
+                val aileronVal = aileron.text.toString().toDouble()
+
+                sendToSim(rudderVal, elevatorVal, aileronVal, current)
+                throttle.text = current.toString()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -212,92 +222,6 @@ class Control : AppCompatActivity() {
 
         })
     }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setSeekBars() {
-        var sendToSimulator = false
-        // rudder
-
-        fun Double.round(decimals: Int): Double {
-            var multiplier = 1.0
-            repeat(decimals) { multiplier *= 10 }
-            return round(this * multiplier) / multiplier
-        }
-
-        val min = -10
-        val max = 10
-        rudderSeekbar.max = max
-        rudderSeekbar.min = min
-
-        rudderSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                var progress = Utils.normalize(
-                    p1.toDouble(),
-                    (-1).toDouble(),
-                    1.toDouble(),
-                    min.toDouble(),
-                    max.toDouble()
-                )
-                rudder.text = progress.round(2).toString()
-                // the change is measured from the last value that sent to the server, therefore
-                if (controlManager.shouldSend(progress, lastRudderVal)) {
-                    controlManager.setRudder(progress)
-                    sendToSimulator = true
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBarX: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBarX: SeekBar?) {
-            }
-
-        })
-
-        // throttle
-        val minT = 0
-        val maxT = 10
-        throttleSeekbar.max = maxT
-        throttleSeekbar.min = minT
-
-        throttleSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                val progress = Utils.normalize(
-                    p1.toDouble(),
-                    (0).toDouble(),
-                    1.toDouble(),
-                    min.toDouble(),
-                    max.toDouble()
-                )
-                throttle.text = progress.toString()
-                // the change is measured from the last value that sent to the server, therefore
-                if (controlManager.shouldSend(progress, lastThrottleVal)) {
-                    controlManager.setThrottle(progress)
-                    sendToSimulator = true
-                }
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-            }
-
-        })
-
-        // if the change is more than 1% we need to send the new values to the simulator
-        if (sendToSimulator) {
-            if (controlManager.sendCommand()) {
-                lastRudderVal = controlManager.getRudder()
-                lastThrottleVal = controlManager.getThrottle()
-            } else {
-                controlManager.setNotification("error in sending to server")
-            }
-        }
-
-    }
-
 
     override fun onStart() {
         super.onStart()
@@ -314,7 +238,7 @@ class Control : AppCompatActivity() {
 
     private fun loopImg() {
         CoroutineScope(Dispatchers.IO).launch {
-            while(showImage) {
+            while (showImage) {
                 controlManager.getImage(image)
                 delay(2000)
             }

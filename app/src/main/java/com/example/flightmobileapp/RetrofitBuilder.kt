@@ -13,31 +13,30 @@ class RetrofitBuilder {
         private var URL: String? = null
 
         fun build(url: String): Api {
-            val client:OkHttpClient  = OkHttpClient.Builder()
-                .connectTimeout(10,TimeUnit.SECONDS)
-                .readTimeout(10,TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                .build()
-
-            val tempRetVal = INSTANCE
-            if (tempRetVal != null && url == URL) {
-                return tempRetVal
-            }
             val json = GsonBuilder()
                 .setLenient()
                 .create()
-            val instance = Retrofit.Builder()
-                .baseUrl(url)
+            val retrofit = Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:5402/")
                 .addConverterFactory(GsonConverterFactory.create(json))
-                //.addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .client(client)
-                .build().create(Api::class.java)
-            INSTANCE = instance
-            return instance
+                .build()
+
+            val api = retrofit.create(Api::class.java)
+            INSTANCE = api
+            return api
         }
 
-        fun getApi(): Api? {
-            return INSTANCE
+        fun getApi(): Api {
+            var tmp = INSTANCE
+            if (tmp != null) {
+                return tmp
+            }
+
+            synchronized(this) {
+                val current = build("123")
+                INSTANCE = current
+                return current
+            }
         }
     }
 }
