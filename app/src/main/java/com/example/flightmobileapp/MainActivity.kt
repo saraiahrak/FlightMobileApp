@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
             val api = RetrofitBuilder.getApi()
 
-            val body = api.getScreenshot().enqueue(object : Callback<ResponseBody> {
+            api.getScreenshot().enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>, response:
                     Response<ResponseBody>

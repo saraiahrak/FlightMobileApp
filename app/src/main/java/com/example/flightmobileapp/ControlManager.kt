@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,24 +95,25 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
 
     fun sendCommand(): Boolean {
         var succeed = false;
-        connection.requestMethod = "POST"
+     /*   connection.requestMethod = "POST"
         connection.setRequestProperty("Content-Type", "application/json; utf-8")
         connection.setRequestProperty("Accept", "application/json")
-        connection.doOutput = true
+        connection.doOutput = true*/
         // create json command
-        val newCommand =
+
+        val json =
+            "{\"aileron\":$lastAileronVal,\n\"rudder\":$lastRudderVal,\n" +
+                    "\"elevator\":$lastElevatorVal,\n\"throttle\":$lastThrottleVal\n}"
+        val rb: RequestBody = RequestBody.create(MediaType.parse("application/json"), json)
+/*        val newCommand =
             Command(
                 lastRudderVal.toFloat(),
                 lastElevatorVal.toFloat(),
                 lastAileronVal.toFloat(),
                 lastThrottleVal.toFloat()
-            )
-        api.post(newCommand).enqueue(object : Callback<Command> {
-            override fun onFailure(call: Call<Command>, t: Throwable) {
-                setNotification("server isn't responding")
-            }
-
-            override fun onResponse(call: Call<Command>, response: Response<Command>) {
+            )*/
+        api?.post(rb).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     succeed = true
                 } else if (response.code() == 500) {
@@ -120,6 +123,9 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
                 } else {
                     setNotification("error")
                 }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                setNotification("server isn't responding")
             }
         })
         return succeed

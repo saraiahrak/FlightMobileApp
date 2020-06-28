@@ -12,5 +12,5 @@ interface Api {
     @GET("/screenshot")
     fun getScreenshot(): Call<ResponseBody>
     @POST("/api/Command")
-    fun post(@Body newCommand: Command): Call<Command>
+    fun post(@Body rb:RequestBody): Call<ResponseBody>
 }
