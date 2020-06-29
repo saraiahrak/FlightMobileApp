@@ -27,11 +27,6 @@ class Control : AppCompatActivity() {
     private lateinit var throttle: TextView
     private lateinit var joystick: JoystickView
     private lateinit var layout: RelativeLayout
-//
-//    private var lastAileronVal = 0.0
-//    private var lastElevatorVal = 0.0
-//    private var lastThrottleVal = 0.0
-//    private var lastRudderVal = 0.0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -123,9 +118,9 @@ class Control : AppCompatActivity() {
 
         if (shouldSend) {
             val sent = controlManager.sendCommand()
-            if (!sent) {
+  /*          if (!sent) {
                 controlManager.setNotification("failed to send values")
-            }
+            }*/
         }
     }
 

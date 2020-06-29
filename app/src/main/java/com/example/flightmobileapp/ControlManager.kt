@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,7 +17,7 @@ import java.net.URL
 class ControlManager(private var context: Context) : AppCompatActivity() {
 
     private lateinit var url: URL
-    public lateinit var connection: HttpURLConnection
+    private lateinit var connection: HttpURLConnection
     private var aileron: Double = 0.0
     private var elevator: Double = 0.0
     private var throttle: Double = 0.0
@@ -26,6 +28,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     private var lastElevatorVal = 0.0
     private var lastThrottleVal = 0.0
     private var lastRudderVal = 0.0
+
     fun setAileron(value: Double) {
         aileron = value
     }
@@ -93,33 +96,29 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
 
     fun sendCommand(): Boolean {
         var succeed = false;
-        connection.requestMethod = "POST"
-        connection.setRequestProperty("Content-Type", "application/json; utf-8")
-        connection.setRequestProperty("Accept", "application/json")
-        connection.doOutput = true
-        // create json command
-        val newCommand =
-            Command(
-                lastRudderVal.toFloat(),
-                lastElevatorVal.toFloat(),
-                lastAileronVal.toFloat(),
-                lastThrottleVal.toFloat()
-            )
-        api.post(newCommand).enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                setNotification("server isn't responding")
-            }
 
+        val json =
+            "{\"aileron\":$lastAileronVal,\n\"rudder\":$lastRudderVal,\n" +
+                    "\"elevator\":$lastElevatorVal,\n\"throttle\":$lastThrottleVal\n}"
+        val rb: RequestBody = RequestBody.create(MediaType.parse("application/json"), json)
+
+        api?.post(rb).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     succeed = true
-                } else if (response.code() == 500) {
-                    setNotification("500")
+                } else if (response.code() == 300) {
+                    setNotification("failed to send values")
                 } else if (response.code() == 400) {
-                    setNotification("400")
+                    setNotification("Invalid value")
+                } else if (response.code() == 600) {
+                    setNotification("Time Out error")
                 } else {
-                    setNotification(response.message())
+                    setNotification("connection failed")
                 }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                setNotification("server isn't responding")
             }
         })
         return succeed

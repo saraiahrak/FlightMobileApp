@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
         val url = user_url.text.toString()
-        // insert to cache ????
 
         val connectionSucceed = controlManager.connect(url)
         if (!connectionSucceed) {
@@ -110,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
             val api = RetrofitBuilder.getApi()
 
-            val body = api.getScreenshot().enqueue(object : Callback<ResponseBody> {
+            api.getScreenshot().enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>, response:
                     Response<ResponseBody>
