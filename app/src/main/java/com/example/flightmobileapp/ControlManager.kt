@@ -15,7 +15,7 @@ import java.net.URL
 class ControlManager(private var context: Context) : AppCompatActivity() {
 
     private lateinit var url: URL
-    private lateinit var connection: HttpURLConnection
+    public lateinit var connection: HttpURLConnection
     private var aileron: Double = 0.0
     private var elevator: Double = 0.0
     private var throttle: Double = 0.0
@@ -105,20 +105,20 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
                 lastAileronVal.toFloat(),
                 lastThrottleVal.toFloat()
             )
-        api.post(newCommand).enqueue(object : Callback<Command> {
-            override fun onFailure(call: Call<Command>, t: Throwable) {
+        api.post(newCommand).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 setNotification("server isn't responding")
             }
 
-            override fun onResponse(call: Call<Command>, response: Response<Command>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     succeed = true
                 } else if (response.code() == 500) {
-                    setNotification("connection failed")
+                    setNotification("500")
                 } else if (response.code() == 400) {
-                    setNotification("format error")
+                    setNotification("400")
                 } else {
-                    setNotification("error")
+                    setNotification(response.message())
                 }
             }
         })

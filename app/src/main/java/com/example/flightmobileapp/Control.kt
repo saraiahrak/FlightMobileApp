@@ -240,7 +240,10 @@ class Control : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             while (showImage) {
                 controlManager.getImage(image)
-                delay(2000)
+                delay(1000)
+//                if (controlManager.connection.responseCode != 200) {
+//                    Toast.makeText(applicationContext, "lost himm", Toast.LENGTH_LONG).show()
+//                }
             }
         }
     }
