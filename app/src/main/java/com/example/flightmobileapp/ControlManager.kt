@@ -28,6 +28,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     private var lastElevatorVal = 0.0
     private var lastThrottleVal = 0.0
     private var lastRudderVal = 0.0
+
     fun setAileron(value: Double) {
         aileron = value
     }
@@ -95,33 +96,24 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
 
     fun sendCommand(): Boolean {
         var succeed = false;
-     /*   connection.requestMethod = "POST"
-        connection.setRequestProperty("Content-Type", "application/json; utf-8")
-        connection.setRequestProperty("Accept", "application/json")
-        connection.doOutput = true*/
-        // create json command
 
         val json =
             "{\"aileron\":$lastAileronVal,\n\"rudder\":$lastRudderVal,\n" +
                     "\"elevator\":$lastElevatorVal,\n\"throttle\":$lastThrottleVal\n}"
         val rb: RequestBody = RequestBody.create(MediaType.parse("application/json"), json)
-/*        val newCommand =
-            Command(
-                lastRudderVal.toFloat(),
-                lastElevatorVal.toFloat(),
-                lastAileronVal.toFloat(),
-                lastThrottleVal.toFloat()
-            )*/
+
         api?.post(rb).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     succeed = true
-                } else if (response.code() == 500) {
-                    setNotification("connection failed")
+                } else if (response.code() == 300) {
+                    setNotification("failed to send values")
                 } else if (response.code() == 400) {
-                    setNotification("format error")
+                    setNotification("Invalid value")
+                } else if (response.code() == 600) {
+                    setNotification("Time Out error")
                 } else {
-                    setNotification("error")
+                    setNotification("connection failed")
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

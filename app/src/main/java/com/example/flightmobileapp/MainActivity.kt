@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
         val url = user_url.text.toString()
-        // insert to cache ????
 
         val connectionSucceed = controlManager.connect(url)
         if (!connectionSucceed) {
