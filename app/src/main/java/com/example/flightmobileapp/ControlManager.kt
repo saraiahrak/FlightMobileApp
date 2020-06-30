@@ -1,6 +1,7 @@
 package com.example.flightmobileapp
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.widget.ImageView
 import android.widget.Toast
@@ -17,41 +18,14 @@ import java.net.URL
 class ControlManager(private var context: Context) : AppCompatActivity() {
 
     private lateinit var url: URL
-    private lateinit var connection: HttpURLConnection
-    private var aileron: Double = 0.0
-    private var elevator: Double = 0.0
-    private var throttle: Double = 0.0
-    private var rudder: Double = 0.0
-    private var api: Api = RetrofitBuilder.getApi()
+    public lateinit var connection: HttpURLConnection
+    public var isConnected: Boolean = false
+    private lateinit var api: Api
 
     private var lastAileronVal = 0.0
     private var lastElevatorVal = 0.0
     private var lastThrottleVal = 0.0
     private var lastRudderVal = 0.0
-
-    fun setAileron(value: Double) {
-        aileron = value
-    }
-
-    fun setElevator(value: Double) {
-        elevator = value
-    }
-
-    fun setThrottle(value: Double) {
-        throttle = value
-    }
-
-    fun setRudder(value: Double) {
-        rudder = value
-    }
-
-    fun getThrottle(): Double {
-        return throttle
-    }
-
-    fun getRudder(): Double {
-        return rudder
-    }
 
 
     fun shouldSendCommand(
@@ -80,12 +54,12 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
     fun connect(u: String): Boolean {
+        api = RetrofitBuilder.getApi(u)
         val temp: URL
         try {
-//            temp = URL(u)
-
             temp = URL(u);
             connection = temp.openConnection() as HttpURLConnection
+            isConnected = true
         } catch (e: Exception) {
             return false
         }
@@ -102,7 +76,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
                     "\"elevator\":$lastElevatorVal,\n\"throttle\":$lastThrottleVal\n}"
         val rb: RequestBody = RequestBody.create(MediaType.parse("application/json"), json)
 
-        api?.post(rb).enqueue(object : Callback<ResponseBody> {
+        api.post(rb).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     succeed = true
@@ -118,7 +92,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                setNotification("server isn't responding")
+                setNotification("server isn't responding, click back button to go back to menu")
             }
         })
         return succeed
@@ -139,7 +113,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
     fun getImage(image: ImageView) {
-        api?.getScreenshot()?.enqueue(object : Callback<ResponseBody> {
+        api.getScreenshot().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 500) {
                     setNotification("connection failed")
@@ -155,9 +129,13 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                setNotification("timeout - server not responding")
+                setNotification("server isn't responding, click back button to go back to menu")
             }
         })
+    }
+
+    fun disconnect() {
+        connection.disconnect()
     }
 
 }

@@ -2,78 +2,29 @@ package com.example.flightmobileapp
 
 import android.content.Context
 import android.widget.Toast
-import com.google.firebase.database.*
 
 class DataCache(cap: Int, context: Context) {
 
-    var data: Array<String?> = arrayOfNulls<String>(cap)
+    var db = UserRoomDatabase.getInstance(context)
+    var dao: URLDao
+    var data: Array<UserURL?> = arrayOfNulls<UserURL>(cap)
     var capacity: Int = 0
     var physize: Int = 0
+    private lateinit var list: List<UserURL>
     private val applicationContext = context
 
     init {
         capacity = cap
-//        val ref = FirebaseDatabase.getInstance().getReference("URLs")
-//        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                var list: Array<UserURL?> = arrayOfNulls(5)
-//                for (snap in p0.children) {
-//                    var map = snap.value as HashMap<String, String>
-//                    var position = map["id"]!!.toInt()
-//                    var url = map["url"]
-//                    data[position] = url
-//                    physize++
-//                }
-//            }
-//        })
+        dao = db.urlDao()
     }
 
     fun isEmpty(): Boolean {
         return physize == 0
     }
 
-//    private fun initialize() {
-//        val ref = FirebaseDatabase.getInstance().getReference("URLs")
-//        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                var list: Array<UserURL?> = arrayOfNulls(5)
-//                for (snap in p0.children) {
-//                    var map = snap.value as HashMap<String, String>
-//                    var position = map["id"]!!.toInt()
-//                    var url = map["url"]
-//                    data[position] = url
-//                    physize++
-//                }
-//            }
-//        })
-//
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                if (p0!!.exists()) {
-//                    for (child in p0.children) {
-//                        val url = child.getValue(UserURL::class.java)
-//                        var position = url!!.id.toInt()
-//                        data[position!!] = url.url
-//                    }
-//                }
-//            }
-//        })
-//    }
 
-    fun insert(url: String) {
-        if (url.isNullOrEmpty()) {
+    fun insert(url: UserURL, isFirst: Boolean) {
+        if (url.url.isNullOrEmpty()) {
             Toast.makeText(
                 applicationContext,
                 "Please insert URL to connect",
@@ -83,30 +34,37 @@ class DataCache(cap: Int, context: Context) {
         }
         if (exists(url)) {
             moveToFront(url)
+            dao.deleteAll()
+            for (item: UserURL? in data) {
+                if (item != null) {
+                    dao.insertAll(item)
+                }
+//                dao.insertAll(item!!)
+            }
         } else {
             setPhysize()
             insertNew(url)
+            if (!isFirst) {
+                dao.insertAll(url)
+            }
         }
-        saveAll()
+//        saveAll()
     }
 
-
-    private fun saveAll() {
-        val ref = FirebaseDatabase.getInstance().getReference("URLs")
-        var i = 0
-        while (i < physize) {
-            var current = data[i]
-            if (current == null) {
-                break
-            }
-
-            val obj = UserURL(i.toString(), current)
-            ref.child(i.toString()).setValue(obj).addOnCompleteListener {
-                Toast.makeText(applicationContext, "Saved!", Toast.LENGTH_LONG).show()
-            }
-            i++
-        }
-    }
+//
+//    private fun saveAll() {
+//        var i = 0
+//        while (i < physize) {
+//            var current = data[i]
+//            if (current == null) {
+//                break
+//            }
+//
+//            val obj = UserURL(current)
+//            //insert to room dao
+//            i++
+//        }
+//    }
 
 
     private fun setPhysize() {
@@ -115,17 +73,24 @@ class DataCache(cap: Int, context: Context) {
         }
     }
 
-    private fun exists(url: String): Boolean {
-        return data.contains(url)
+    private fun exists(url: UserURL): Boolean {
+
+        for (item in data) {
+            if (item != null && url.isEqual(item)) {
+                return true
+            }
+        }
+        return false
+//        return data.contains(url.url)
     }
 
-    private fun moveToFront(url: String) {
+    private fun moveToFront(url: UserURL) {
         val position = findPos(url)
         moveByOne(position)
         data[0] = url
     }
 
-    private fun insertNew(url: String) {
+    private fun insertNew(url: UserURL) {
         val i: Int;
         if (isFull()) {
             i = physize - 1
@@ -144,11 +109,11 @@ class DataCache(cap: Int, context: Context) {
         }
     }
 
-    private fun findPos(url: String): Int {
+    private fun findPos(url: UserURL): Int {
         var i: Int = 0
 
         while (i < physize) {
-            if (data[i] == url) {
+            if (data[i]?.isEqual(url)!!) {
                 return i
             }
             i++

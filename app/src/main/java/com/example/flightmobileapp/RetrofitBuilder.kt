@@ -13,11 +13,12 @@ class RetrofitBuilder {
         private var URL: String? = null
 
         fun build(url: String): Api {
+            URL = url
             val json = GsonBuilder()
                 .setLenient()
                 .create()
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5402/")
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create(json))
                 .build()
 
@@ -26,14 +27,14 @@ class RetrofitBuilder {
             return api
         }
 
-        fun getApi(): Api {
+        fun getApi(url: String): Api {
             var tmp = INSTANCE
-            if (tmp != null) {
+            if (tmp != null && URL == url) {
                 return tmp
             }
 
             synchronized(this) {
-                val current = build("123")
+                val current = build(url)
                 INSTANCE = current
                 return current
             }

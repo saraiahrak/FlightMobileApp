@@ -22,17 +22,31 @@ class MainActivity : AppCompatActivity() {
     lateinit var connect_button: Button
     lateinit var user_url: TextView
     lateinit var cache: DataCache
-    private var controlManager: ControlManager = ControlManager(this)
+    lateinit var db: UserRoomDatabase
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView();
+        initView()
+        db = UserRoomDatabase.getInstance(applicationContext)
         cache = DataCache(5, applicationContext)
+        val dao = db.urlDao()
+        var list: Array<UserURL> = dao.getAll()
+        for (item in list.toList().asReversed()) {
+            saveURL(item, true)
+        }
         if (!cache.isEmpty()) {
             showOnButtons()
         }
         setButtonsListeners()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        var arr = cache.data
+        val dao = db.urlDao()
+        dao.insert(arr.toList())
     }
 
     private fun setButtonsListeners() {
@@ -44,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         connect_button.setOnClickListener {
             val url = user_url.text.toString().trim()
             user_url.hint = "Type URL..."
-            saveURL(url)
+            saveURL(UserURL(url), false)
             showOnButtons()
             controlActivity()
         }
@@ -55,15 +69,13 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener {
                 if (button.text.isNotEmpty()) {
                     user_url.text = button.text
-                    cache.insert(button.text.toString())
-                    showOnButtons()
                 }
             }
         }
     }
 
-    private fun saveURL(url: String) {
-        cache.insert(url)
+    private fun saveURL(url: UserURL, isFirst: Boolean) {
+        cache.insert(url, isFirst)
     }
 
     private fun initView() {
@@ -82,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     private fun showOnButtons() {
         var i = 0
         while (i < cache.physize) {
-            buttons[i].text = cache.data[i]
+            buttons[i].text = cache.data[i]?.url
             buttons[i].visibility = View.VISIBLE
             i++
         }
@@ -95,19 +107,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun controlActivity() {
+        var controlManager = ControlManager(this)
+
         if (user_url.text.toString() == "") {
             controlManager.setNotification("insert url")
             return
         }
         val url = user_url.text.toString()
+        user_url.text = ""
 
         val connectionSucceed = controlManager.connect(url)
         if (!connectionSucceed) {
             controlManager.setNotification("connection failed")
-            user_url.setText("")
         } else {
-
-            val api = RetrofitBuilder.getApi()
+            val api = RetrofitBuilder.getApi(url)
 
             api.getScreenshot().enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
@@ -116,7 +129,6 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     if (response.code() == 404) {
                         controlManager.setNotification("connection failed")
-                        user_url.setText("")
                         return
                     }
 
@@ -127,7 +139,6 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     controlManager.setNotification(t.message.toString())
-                    user_url.setText("")
                     return
                 }
             })

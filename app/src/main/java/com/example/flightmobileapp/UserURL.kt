@@ -1,7 +1,10 @@
 package com.example.flightmobileapp
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class UserURL(val id: String, val url: String) {
+@Entity(tableName = "urls")
+data class UserURL(@PrimaryKey val url: String) {
 
     fun isEqual(other: UserURL): Boolean {
         return this.url == other.url

@@ -1,12 +1,15 @@
 package com.example.flightmobileapp
 
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import io.github.controlwear.virtual.joystick.android.JoystickView
 import kotlinx.coroutines.*
+import java.lang.Exception
 import kotlin.math.cos
 import kotlin.math.round
 import kotlin.math.sin
@@ -19,6 +22,9 @@ class Control : AppCompatActivity() {
     private var showImage: Boolean = true
 
     private lateinit var image: ImageView
+    private lateinit var backButton: Button
+    private lateinit var stayButton: Button
+    private lateinit var popUp: TextView
     private lateinit var rudderSeekbar: SeekBar
     private lateinit var throttleSeekbar: SeekBar
     private lateinit var rudder: TextView
@@ -37,7 +43,7 @@ class Control : AppCompatActivity() {
         val connectionSucceed = controlManager.connect(url!!)
         if (connectionSucceed) {
             controlManager.connect(url)
-            api = RetrofitBuilder.getApi()
+            api = RetrofitBuilder.getApi(url)
             if (api == null) {
                 // problem with server
                 controlManager.setNotification("can't connect to server")
@@ -49,7 +55,15 @@ class Control : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        controlManager.disconnect()
+    }
+
     private fun initView() {
+        popUp = findViewById(R.id.go_back_label)
+        backButton = findViewById(R.id.back_button)
+        stayButton = findViewById(R.id.stay_button)
         image = findViewById(R.id.screenshot)
         rudderSeekbar = findViewById(R.id.rudder_seekbar);
         throttleSeekbar = findViewById(R.id.throttle_seekbar);
@@ -118,9 +132,9 @@ class Control : AppCompatActivity() {
 
         if (shouldSend) {
             val sent = controlManager.sendCommand()
-  /*          if (!sent) {
-                controlManager.setNotification("failed to send values")
-            }*/
+            /*          if (!sent) {
+                          controlManager.setNotification("failed to send values")
+                      }*/
         }
     }
 
@@ -236,13 +250,8 @@ class Control : AppCompatActivity() {
             while (showImage) {
                 controlManager.getImage(image)
                 delay(1000)
-//                if (controlManager.connection.responseCode != 200) {
-//                    Toast.makeText(applicationContext, "lost himm", Toast.LENGTH_LONG).show()
-//                }
             }
         }
     }
 
 }
-
-
