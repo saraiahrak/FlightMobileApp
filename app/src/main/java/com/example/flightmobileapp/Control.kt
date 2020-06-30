@@ -1,19 +1,20 @@
 package com.example.flightmobileapp
 
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import io.github.controlwear.virtual.joystick.android.JoystickView
 import kotlinx.coroutines.*
-import java.lang.Exception
 import kotlin.math.cos
 import kotlin.math.round
 import kotlin.math.sin
 
+/**
+ * Class Control
+ * Class for Control Activity
+ * */
 
 class Control : AppCompatActivity() {
 
@@ -132,9 +133,6 @@ class Control : AppCompatActivity() {
 
         if (shouldSend) {
             val sent = controlManager.sendCommand()
-            /*          if (!sent) {
-                          controlManager.setNotification("failed to send values")
-                      }*/
         }
     }
 
@@ -154,6 +152,7 @@ class Control : AppCompatActivity() {
             return round(this * multiplier) / multiplier
         }
 
+        //normalize values to allow double values in given range
         val min = -10
         val max = 10
         rudderSeekbar.max = max
@@ -161,6 +160,7 @@ class Control : AppCompatActivity() {
 
         rudderSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                //calculate progress of bar
                 var progress = Utils.normalize(
                     p1.toDouble(),
                     (-1).toDouble(),
@@ -169,13 +169,17 @@ class Control : AppCompatActivity() {
                     max.toDouble()
                 )
 
+                //round to 2 decimal points
                 val current = progress.round(2)
 
                 val elevatorVal = elevator.text.toString().toDouble()
                 val throttleVal = throttle.text.toString().toDouble()
                 val aileronVal = aileron.text.toString().toDouble()
 
+                //send values
                 sendToSim(current, elevatorVal, aileronVal, throttleVal)
+
+                //show in UI
                 rudder.text = current.toString()
             }
 
@@ -246,6 +250,7 @@ class Control : AppCompatActivity() {
 
 
     private fun loopImg() {
+        //get image every second
         CoroutineScope(Dispatchers.IO).launch {
             while (showImage) {
                 controlManager.getImage(image)

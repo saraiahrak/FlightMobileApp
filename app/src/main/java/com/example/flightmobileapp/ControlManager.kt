@@ -18,16 +18,16 @@ import java.net.URL
 class ControlManager(private var context: Context) : AppCompatActivity() {
 
     private lateinit var url: URL
-    public lateinit var connection: HttpURLConnection
-    public var isConnected: Boolean = false
+    lateinit var connection: HttpURLConnection
+    private var isConnected: Boolean = false
     private lateinit var api: Api
-
     private var lastAileronVal = 0.0
     private var lastElevatorVal = 0.0
     private var lastThrottleVal = 0.0
     private var lastRudderVal = 0.0
 
 
+    //check if change in one of the variables exceeded 1%
     fun shouldSendCommand(
         rudderVal: Double,
         elevatorVal: Double,
@@ -53,6 +53,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
         return false
     }
 
+    //connect to given URL
     fun connect(u: String): Boolean {
         api = RetrofitBuilder.getApi(u)
         val temp: URL
@@ -68,6 +69,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
     }
 
 
+    //send the current values to the simulator
     fun sendCommand(): Boolean {
         var succeed = false;
 
@@ -103,7 +105,6 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-
     private fun shouldSend(newVal: Double, lastVal: Double): Boolean {
         // checks if values changed in more than 1%
         if ((newVal > 1.01 * lastVal) || (newVal < 0.99 * lastVal)) {
@@ -112,6 +113,7 @@ class ControlManager(private var context: Context) : AppCompatActivity() {
         return false
     }
 
+    //single request for image
     fun getImage(image: ImageView) {
         api.getScreenshot().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

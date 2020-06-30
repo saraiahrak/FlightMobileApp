@@ -14,9 +14,6 @@ interface URLDao {
     @Query("DELETE FROM urls")
     fun deleteAll()
 
-    @Delete
-    fun delete(userURL: UserURL)
-
     @Insert
     fun insertAll(vararg users: UserURL)
 }

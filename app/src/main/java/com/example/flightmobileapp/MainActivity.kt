@@ -13,16 +13,16 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var button1: Button
-    lateinit var button2: Button
-    lateinit var button3: Button
-    lateinit var button4: Button
-    lateinit var button5: Button
-    lateinit var buttons: Array<Button>
-    lateinit var connect_button: Button
-    lateinit var user_url: TextView
-    lateinit var cache: DataCache
-    lateinit var db: UserRoomDatabase
+    private lateinit var button1: Button
+    private lateinit var button2: Button
+    private lateinit var button3: Button
+    private lateinit var button4: Button
+    private lateinit var button5: Button
+    private lateinit var buttons: Array<Button>
+    private lateinit var connectButton: Button
+    private lateinit var input: TextView
+    private lateinit var cache: DataCache
+    private lateinit var db: UserRoomDatabase
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setConnectListen() {
-        connect_button.setOnClickListener {
-            val url = user_url.text.toString().trim()
-            user_url.hint = "Type URL..."
+        connectButton.setOnClickListener {
+            val url = input.text.toString().trim()
+            input.hint = "Type URL..."
             saveURL(UserURL(url), false)
             showOnButtons()
             controlActivity()
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         for (button in buttons) {
             button.setOnClickListener {
                 if (button.text.isNotEmpty()) {
-                    user_url.text = button.text
+                    input.text = button.text
                 }
             }
         }
@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         button3 = findViewById(R.id.url_button3);
         button4 = findViewById(R.id.url_button4);
         button5 = findViewById(R.id.url_button5);
-        connect_button = findViewById(R.id.connect_button);
-        user_url = findViewById(R.id.user_url);
+        connectButton = findViewById(R.id.connect_button);
+        input = findViewById(R.id.user_url);
         buttons = arrayOf(button1, button2, button3, button4, button5);
 
         setButtonsVisibility();
@@ -109,12 +109,12 @@ class MainActivity : AppCompatActivity() {
     fun controlActivity() {
         var controlManager = ControlManager(this)
 
-        if (user_url.text.toString() == "") {
+        if (input.text.toString() == "") {
             controlManager.setNotification("insert url")
             return
         }
-        val url = user_url.text.toString()
-        user_url.text = ""
+        val url = input.text.toString()
+        input.text = ""
 
         val connectionSucceed = controlManager.connect(url)
         if (!connectionSucceed) {

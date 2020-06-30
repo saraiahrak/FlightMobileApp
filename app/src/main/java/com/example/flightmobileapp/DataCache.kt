@@ -3,14 +3,16 @@ package com.example.flightmobileapp
 import android.content.Context
 import android.widget.Toast
 
+
+//LRU cache class to save urls for user, and insert to Room database
+
 class DataCache(cap: Int, context: Context) {
 
-    var db = UserRoomDatabase.getInstance(context)
-    var dao: URLDao
+    private var db = UserRoomDatabase.getInstance(context)
+    private var dao: URLDao
     var data: Array<UserURL?> = arrayOfNulls<UserURL>(cap)
-    var capacity: Int = 0
+    private var capacity: Int = 0
     var physize: Int = 0
-    private lateinit var list: List<UserURL>
     private val applicationContext = context
 
     init {
@@ -39,7 +41,6 @@ class DataCache(cap: Int, context: Context) {
                 if (item != null) {
                     dao.insertAll(item)
                 }
-//                dao.insertAll(item!!)
             }
         } else {
             setPhysize()
@@ -48,24 +49,7 @@ class DataCache(cap: Int, context: Context) {
                 dao.insertAll(url)
             }
         }
-//        saveAll()
     }
-
-//
-//    private fun saveAll() {
-//        var i = 0
-//        while (i < physize) {
-//            var current = data[i]
-//            if (current == null) {
-//                break
-//            }
-//
-//            val obj = UserURL(current)
-//            //insert to room dao
-//            i++
-//        }
-//    }
-
 
     private fun setPhysize() {
         if (!isFull()) {
@@ -81,7 +65,6 @@ class DataCache(cap: Int, context: Context) {
             }
         }
         return false
-//        return data.contains(url.url)
     }
 
     private fun moveToFront(url: UserURL) {
@@ -110,7 +93,7 @@ class DataCache(cap: Int, context: Context) {
     }
 
     private fun findPos(url: UserURL): Int {
-        var i: Int = 0
+        var i = 0
 
         while (i < physize) {
             if (data[i]?.isEqual(url)!!) {
